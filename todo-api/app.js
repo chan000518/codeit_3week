@@ -21,7 +21,7 @@ app.get('/tasks',(req,res) => {
     if (count){
         newTasks = newTasks.slice(0, count);
     }
-    res.send(tasks);
+    res.send(newTasks);
 });
 
 app.listen(3000, () => console.log('Server Started'))
