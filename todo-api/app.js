@@ -2,6 +2,7 @@ import express from 'express';
 import tasks from "./data/mock.js"
 
 const app = express();
+app.use(express.json())
 
 app.get('/hello',(req,res) => {
     res.send('Hello Express!!!');
@@ -32,6 +33,16 @@ app.get("/tasks/:id",(req,res)=>{
     }else{
         res.status(404).send({ message : "id에 해당하는 내용 없음"})
     }
-} )
+})
 
+app.post("/tasks",(req,res)=>{
+    const newTask = req.body;
+    const ids = tasks.map((task)=> task.id)
+    newTask.id = Math.max(...ids) + 1
+    newTask.isComplete = false;
+    newTask.createdAt = new Date();
+    newTask.updatedAt = new Date();
+    tasks.push(newTask);
+    res.status(201).send(newTask)
+})
 app.listen(3000, () => console.log('Server Started'))
