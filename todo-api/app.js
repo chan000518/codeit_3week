@@ -24,4 +24,14 @@ app.get('/tasks',(req,res) => {
     res.send(newTasks);
 });
 
+app.get("./tasks/:id",(req,res)=>{
+    const id = Number(req.params.id);
+    const task = tasks.find((task) => task.id === id);
+    if(task){
+        res.send(task);
+    }else{
+        res.send({ message : "id에 해당하는 내용 없음"})
+    }
+} )
+
 app.listen(3000, () => console.log('Server Started'))
