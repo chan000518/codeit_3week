@@ -30,7 +30,7 @@ app.get("./tasks/:id",(req,res)=>{
     if(task){
         res.send(task);
     }else{
-        res.send({ message : "id에 해당하는 내용 없음"})
+        res.status(404).send({ message : "id에 해당하는 내용 없음"})
     }
 } )
 
