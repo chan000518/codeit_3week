@@ -22,3 +22,6 @@ Content-Type: application/json
 {
     "isComplete" : true
 }
+
+###
+DELETE http://localhost:3000/tasks/1

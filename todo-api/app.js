@@ -60,4 +60,16 @@ app.patch("/tasks/:id",(req,res)=>{
     }
 })
 
+
+app.delete("/tasks/:id",(req,res)=>{
+    const id = Number(req.params.id);
+    const Idx = tasks.findIndex((task) => task.id === id);
+    if(Idx >= 0 ){
+        tasks.splice(Idx, 1);
+        res.sendStatus(204);
+    }else{
+        res.status(404).send({ message : "id에 해당하는 내용 없음"})
+    }
+})
+
 app.listen(3000, () => console.log('Server Started'))
