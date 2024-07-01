@@ -45,4 +45,19 @@ app.post("/tasks",(req,res)=>{
     tasks.push(newTask);
     res.status(201).send(newTask)
 })
+
+app.patch("/tasks/:id",(req,res)=>{
+    const id = Number(req.params.id);
+    const task = tasks.find((task) => task.id === id);
+    if(task){
+        Object.keys(req.body).forEach((key) =>{
+            task[key] = req.body[key];
+        });
+        task.updatedAt = new Date();
+        res.send(task);
+    }else{
+        res.status(404).send({ message : "id에 해당하는 내용 없음"})
+    }
+})
+
 app.listen(3000, () => console.log('Server Started'))

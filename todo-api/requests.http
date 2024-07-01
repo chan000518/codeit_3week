@@ -14,3 +14,11 @@ Content-Type: application/json
 {
     "title":"호텔예약"
 }
+
+###
+PATCH  http://localhost:3000/tasks/1
+Content-Type: application/json
+
+{
+    "isComplete" : true
+}
