@@ -24,7 +24,7 @@ app.get('/tasks',(req,res) => {
     res.send(newTasks);
 });
 
-app.get("./tasks/:id",(req,res)=>{
+app.get("/tasks/:id",(req,res)=>{
     const id = Number(req.params.id);
     const task = tasks.find((task) => task.id === id);
     if(task){

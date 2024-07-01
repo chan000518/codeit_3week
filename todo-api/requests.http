@@ -2,3 +2,6 @@ Get http://localhost:3000/tasks
 
 ###
 Get http://localhost:3000/tasks?sort=oldest&count=3
+
+###
+Get http://localhost:3000/tasks/10
