@@ -1,5 +1,7 @@
 import express from 'express';
 import tasks from "./data/mock.js"
+import mongoose from 'mongoose';
+import { DATABASE_URL } from './env.js';
 
 const app = express();
 app.use(express.json())
@@ -71,5 +73,8 @@ app.delete("/tasks/:id",(req,res)=>{
         res.status(404).send({ message : "id에 해당하는 내용 없음"})
     }
 })
+
+
+mongoose.connect(DATABASE_URL).then(() => console.log('Connected to DB'));
 
 app.listen(3000, () => console.log('Server Started'))
