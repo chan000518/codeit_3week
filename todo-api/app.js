@@ -1,5 +1,4 @@
 import express from 'express';
-import mockTasks from "./data/mock.js"
 import mongoose from 'mongoose';
 import { DATABASE_URL } from './env.js';
 import Task from './models/Task.js';
@@ -27,7 +26,7 @@ app.get('/hello',(req,res) => {
     res.send('Hello Express!!!');
 });
 
-app.get('/tasks', async (req,res) => {
+app.get('/tasks', asyncHandler(async (req,res) => {
     const sort = req.query.sort;
     const count = Number(req.query.count);
     
@@ -37,7 +36,7 @@ app.get('/tasks', async (req,res) => {
     const tasks = await Task.find().sort(sortOption).limit(count);
 
     res.send(tasks);
-});
+}));
 
 app.get("/tasks/:id", async (req,res)=>{
     const id = req.params.id;
@@ -55,31 +54,31 @@ app.post("/tasks",async (req,res)=>{
     res.status(201).send(newTask)
 })
 
-app.patch("/tasks/:id",(req,res)=>{
-    const id = Number(req.params.id);
-    const task = mockTasks.find((task) => task.id === id);
+app.patch("/tasks/:id",asyncHandler(async(req,res)=>{
+    const id = req.params.id;
+    // 쿼리(데이터 베이스로 쿼리가 날라가고 이를 비동기로 기다림)
+    const task = await Task.findById(id);
     if(task){
         Object.keys(req.body).forEach((key) =>{
             task[key] = req.body[key];
         });
-        task.updatedAt = new Date();
+        await task.save();
         res.send(task);
     }else{
         res.status(404).send({ message : "id에 해당하는 내용 없음"})
     }
-})
+}))
 
 
-app.delete("/tasks/:id",(req,res)=>{
-    const id = Number(req.params.id);
-    const Idx = mockTasks.findIndex((task) => task.id === id);
-    if(Idx >= 0 ){
-        mockTasks.splice(Idx, 1);
+app.delete("/tasks/:id",asyncHandler(async(req,res)=>{
+    const id = req.params.id;
+    const task = await Task.findByIdAndDelete(id);
+    if(task){
         res.sendStatus(204);
     }else{
         res.status(404).send({ message : "id에 해당하는 내용 없음"})
     }
-})
+}));
 
 mongoose.connect(DATABASE_URL).then(() => console.log('Connected to DB'));
 
